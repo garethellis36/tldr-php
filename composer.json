@@ -1,0 +1,50 @@
+{
+  "name": "garethellis/tldr-php",
+  "type": "library",
+  "description": "A PHP client for the TLDR man pages project",
+  "keywords": [
+    "man pages",
+    "tldr"
+  ],
+  "homepage": "https://github.com/garethellis36/tldr-php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gareth Ellis",
+      "email": "garethellis@gmail.com",
+      "homepage": "http://github.com/garethellis36",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "guzzlehttp/guzzle": "^6.1",
+    "symfony/console": "^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.0|^5.1",
+    "hamcrest/hamcrest-php": "^1.2",
+    "scrutinizer/ocular": "~1.3",
+    "squizlabs/php_codesniffer": "~2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "GarethEllis\\Tldr\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GarethEllis\\Tldr\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "sniff": "./vendor/bin/phpcs src/ --standard=PSR2 --report=summary",
+    "fix": "./vendor/bin/phpcbf src/ --standard=PSR2",
+    "test": "./vendor/bin/phpunit"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
