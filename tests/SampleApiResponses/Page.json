@@ -1,0 +1,18 @@
+{
+  "name": "7za.md",
+  "path": "pages/common/7za.md",
+  "sha": "4af8bcd27461c59af33983684043476d428b7f6e",
+  "size": 533,
+  "url": "https://api.github.com/repos/tldr-pages/tldr/contents/pages/common/7za.md?ref=master",
+  "html_url": "https://github.com/tldr-pages/tldr/blob/master/pages/common/7za.md",
+  "git_url": "https://api.github.com/repos/tldr-pages/tldr/git/blobs/4af8bcd27461c59af33983684043476d428b7f6e",
+  "download_url": "https://raw.githubusercontent.com/tldr-pages/tldr/master/pages/common/7za.md",
+  "type": "file",
+  "content": "IyA3emEKCj4gQSBmaWxlIGFyY2hpdmVyIHdpdGggaGlnaCBjb21wcmVzc2lv\nbiByYXRpby4KCi0gQ29tcHJlc3MgZGlyZWN0b3J5IG9yIGZpbGU6CgpgN3ph\nIGEge3tjb21wcmVzc2VkLjd6fX0ge3tkaXJlY3Rvcnlfb3JfZmlsZV90b19j\nb21wcmVzc319YAoKLSBEZWNvbXByZXNzIGFuIGV4aXN0aW5nIDd6IGZpbGUg\nd2l0aCBvcmlnaW5hbCBkaXJlY3Rvcnkgc3RydWN0dXJlOgoKYDd6YSB4IHt7\nY29tcHJlc3NlZC43en19YAoKLSBDb21wcmVzcyB0byB6aXAgZm9ybWF0OgoK\nYDd6YSBhIC10emlwIHt7Y29tcHJlc3NlZC56aXB9fSB7e2RpcmVjdG9yeV9v\ncl9maWxlX3RvX2NvbXByZXNzfX1gCgotIENyZWF0ZSBtdWx0aXBhcnQgN3pp\ncCBmaWxlOyBgcGFydF9zaXplYCBzcGVjaWZpZXMgcGFydCBzaXplIGluIEJ5\ndGVzLCBLaWxvYnl0ZXMsIE1lZ2FieXRlcyBvciBHaWdhYnl0ZXM6CgpgN3ph\nIC12e3twYXJ0X3NpemV9fXt7W2J8a3xtfGddfX0ge3tjb21wcmVzc2VkLjd6\nfX0ge3tkaXJlY3Rvcnlfb3JfZmlsZV90b19jb21wcmVzc319YAo=\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/tldr-pages/tldr/contents/pages/common/7za.md?ref=master",
+    "git": "https://api.github.com/repos/tldr-pages/tldr/git/blobs/4af8bcd27461c59af33983684043476d428b7f6e",
+    "html": "https://github.com/tldr-pages/tldr/blob/master/pages/common/7za.md"
+  }
+}

@@ -2,6 +2,7 @@
 
 namespace GarethEllis\Tldr\Console\Command;
 
+use GarethEllis\Tldr\Fetcher\CacheFetcher;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
@@ -9,8 +10,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use GarethEllis\Tldr\Client;
+use GarethEllis\Tldr\Fetcher\RemoteFetcher;
 use GuzzleHttp\Client as Http;
+use GarethEllis\Tldr\Fetcher\Exception\PageNotFoundException;
+use GarethEllis\Tldr\Cache\StashReader;
 
 class TldrCommand extends Command
 {
@@ -30,11 +33,14 @@ class TldrCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $http = new Http();
-        $client = new Client($http);
+        $fetcher = new RemoteFetcher($http);
+
+        $cacheReader = new StashReader();
+        $fetcher = new CacheFetcher($fetcher, $cacheReader);
 
         try {
-            $output->write($client->lookupPage($input->getArgument("page")));
-        } catch (GarethEllis\Tldr\Exception\PageNotFoundException $e) {
+            $output->write($fetcher->fetchPage($input->getArgument("page")));
+        } catch (PageNotFoundException $e) {
             $output->write("Page not found");
         } catch (ClientException $e) {
             $output->write("Error connecting to GitHub");
