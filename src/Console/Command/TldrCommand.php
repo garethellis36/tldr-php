@@ -3,19 +3,14 @@
 namespace GarethEllis\Tldr\Console\Command;
 
 use GarethEllis\Tldr\Console\Output\PageOutput;
-use GarethEllis\Tldr\Fetcher\CacheFetcher;
-use GarethEllis\Tldr\Parser\MarkdownParser;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
+use GarethEllis\Tldr\Fetcher\Exception\RemoteFetcherException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use GarethEllis\Tldr\Fetcher\RemoteFetcher;
 use GuzzleHttp\Client as Http;
 use GarethEllis\Tldr\Fetcher\Exception\PageNotFoundException;
-use GarethEllis\Tldr\Cache\StashReader;
 
 class TldrCommand extends Command
 {
@@ -48,7 +43,10 @@ class TldrCommand extends Command
 
         } catch (PageNotFoundException $e) {
 
-            return $output->write("Page not found");
+            return $output->write("Page not found :-(");
+        } catch (RemoteFetcherException $e) {
+
+            return $output->write("<error>Unable to connect to repository :-(</error>");
         }
     }
 }
