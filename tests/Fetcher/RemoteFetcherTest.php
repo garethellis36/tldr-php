@@ -57,8 +57,8 @@ class RemoteFetcherTest extends \PHPUnit_Framework_TestCase
          */
         $cacheWriter = $this->getMock(CacheWriterInterface::class);
         $cacheWriter->expects($this->once())
-            ->method("writeToCache");
-            //TODO add ->with(anInstanceOf(TldrPage::class))
+            ->method("writeToCache")
+            ->with($this->isInstanceOf(TldrPage::class));
 
         $fetcher = new RemoteFetcher($http, $cacheWriter);
         $this->assertInstanceOf(TldrPage::class, $fetcher->fetchPage("7za"));
