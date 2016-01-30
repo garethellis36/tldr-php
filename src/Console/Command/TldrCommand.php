@@ -2,7 +2,9 @@
 
 namespace GarethEllis\Tldr\Console\Command;
 
+use GarethEllis\Tldr\Console\Output\PageOutput;
 use GarethEllis\Tldr\Fetcher\CacheFetcher;
+use GarethEllis\Tldr\Parser\MarkdownParser;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
@@ -35,17 +37,18 @@ class TldrCommand extends Command
         $http = new Http();
         $fetcher = new RemoteFetcher($http);
 
-        $cacheReader = new StashReader();
-        $fetcher = new CacheFetcher($fetcher, $cacheReader);
+        //$cacheReader = new StashReader();
+        //$fetcher = new CacheFetcher($fetcher, $cacheReader);
 
         try {
-            $output->write($fetcher->fetchPage($input->getArgument("page")));
+
+            $page = $fetcher->fetchPage($input->getArgument("page"));
+            $output = new PageOutput($output);
+            $output->write($page);
+
         } catch (PageNotFoundException $e) {
-            $output->write("Page not found");
-        } catch (ClientException $e) {
-            $output->write("Error connecting to GitHub");
-        } catch (RequestException $e) {
-            $output->write("Error sending request to GitHub");
+
+            return $output->write("Page not found");
         }
     }
 }
