@@ -1,6 +1,9 @@
 <?php
+
 namespace GarethEllis\Tldr\Console\Command;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +32,14 @@ class TldrCommand extends Command
         $http = new Http();
         $client = new Client($http);
 
-        $client->lookupPage($input->getArgument("page"));
+        try {
+            $output->write($client->lookupPage($input->getArgument("page")));
+        } catch (GarethEllis\Tldr\Exception\PageNotFoundException $e) {
+            $output->write("Page not found");
+        } catch (ClientException $e) {
+            $output->write("Error connecting to GitHub");
+        } catch (RequestException $e) {
+            $output->write("Error sending request to GitHub");
+        }
     }
 }
