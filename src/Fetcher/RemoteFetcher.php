@@ -58,33 +58,38 @@ class RemoteFetcher implements PageFetcherInterface
     {
         try {
             $response = $this->http->get($this->baseUrl);
-
-            $contents = json_decode($response->getBody()->getContents(), true);
-            $pages = base64_decode($contents["content"]);
-            $json = json_decode($pages, true);
-            $pages = $json["commands"];
-
-            $pages = array_filter($pages, function ($foundPage) use ($pageName) {
-                return $foundPage["name"] === $pageName;
-            });
-
-            //working on assumption that only one page has been found!
-            if (empty($pages)) {
-                throw new PageNotFoundException;
-            }
-
-            $page = $pages["0"];
-            $os = $page["platform"][0];
-            $url = str_replace("{os}", $os, $this->pageInfoUrlTemplate);
-            $url = str_replace("{command}", $page["name"], $url);
-
-            $response = $this->http->get($url);
-            $contents = json_decode($response->getBody()->getContents(), true);
-
-            $pageContent = base64_decode($contents["content"]);
         } catch (\Exception $e) {
             throw new RemoteFetcherException($e->getMessage());
         }
+
+        $contents = json_decode($response->getBody()->getContents(), true);
+        $pages = base64_decode($contents["content"]);
+        $json = json_decode($pages, true);
+        $pages = $json["commands"];
+
+        $pages = array_filter($pages, function ($foundPage) use ($pageName) {
+            return $foundPage["name"] === $pageName;
+        });
+
+        //working on assumption that only one page has been found!
+        if (empty($pages)) {
+            throw new PageNotFoundException;
+        }
+
+        $page = $pages["0"];
+        $os = $page["platform"][0];
+        $url = str_replace("{os}", $os, $this->pageInfoUrlTemplate);
+        $url = str_replace("{command}", $page["name"], $url);
+
+        try {
+            $response = $this->http->get($url);
+        } catch (\Exception $e) {
+            throw new RemoteFetcherException($e->getMessage());
+        }
+
+        $contents = json_decode($response->getBody()->getContents(), true);
+
+        $pageContent = base64_decode($contents["content"]);
 
         $page = new TldrPage($pageName, $os, $pageContent);
 

@@ -43,10 +43,10 @@ class TldrCommand extends Command
 
         } catch (PageNotFoundException $e) {
 
-            return $output->write("Page not found :-(");
+            return $output->writeln("<comment>Page not found</comment>");
         } catch (RemoteFetcherException $e) {
 
-            return $output->write("<error>Unable to connect to repository :-(</error>");
+            return $output->writeln("<error>Unable to connect to repository :-(</error>");
         }
     }
 }
