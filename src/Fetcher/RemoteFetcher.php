@@ -15,7 +15,7 @@ use GarethEllis\Tldr\Fetcher\Exception\RemoteFetcherException;
  *
  * @package GarethEllis\Tldr\Fetcher
  */
-class RemoteFetcher implements PageFetcherInterface
+class RemoteFetcher extends AbstractFetcher implements PageFetcherInterface
 {
 
     protected $http;
@@ -29,7 +29,7 @@ class RemoteFetcher implements PageFetcherInterface
      * @var string URL template for fetching an individual page
      */
     protected $pageInfoUrlTemplate =
-        "https://api.github.com/repos/tldr-pages/tldr/contents/pages/{os}/{command}.md?ref=master";
+        "https://api.github.com/repos/tldr-pages/tldr/contents/pages/{platform}/{command}.md?ref=master";
 
     /**
      * @var CacheWriterInterface
@@ -50,7 +50,7 @@ class RemoteFetcher implements PageFetcherInterface
     /**
      * Fetch a page from remote repository
      *
-     * @param string $page
+     * @param string $pageName
      * @return string
      * @throws PageNotFoundException
      */
@@ -67,9 +67,7 @@ class RemoteFetcher implements PageFetcherInterface
         $json = json_decode($pages, true);
         $pages = $json["commands"];
 
-        $pages = array_filter($pages, function ($foundPage) use ($pageName) {
-            return $foundPage["name"] === $pageName;
-        });
+        $pages = $this->findPageInList($pageName, $pages);
 
         //working on assumption that only one page has been found!
         if (empty($pages)) {
@@ -77,8 +75,8 @@ class RemoteFetcher implements PageFetcherInterface
         }
 
         $page = $pages["0"];
-        $os = $page["platform"][0];
-        $url = str_replace("{os}", $os, $this->pageInfoUrlTemplate);
+        $platform = $page["platform"][0];
+        $url = str_replace("{platform}", $platform, $this->pageInfoUrlTemplate);
         $url = str_replace("{command}", $page["name"], $url);
 
         try {
@@ -91,7 +89,7 @@ class RemoteFetcher implements PageFetcherInterface
 
         $pageContent = base64_decode($contents["content"]);
 
-        $page = new TldrPage($pageName, $os, $pageContent);
+        $page = new TldrPage($pageName, $platform, $pageContent);
 
         if ($this->cacheWriter) {
             $this->cacheWriter->writeToCache($page);

@@ -1,6 +1,6 @@
 <?php
 
-namespace GarethEllis\Tldr\Test\Page;
+namespace GarethEllis\Tldr\Tests\Page;
 
 use GarethEllis\Tldr\Page\TldrPage;
 
@@ -9,12 +9,12 @@ class TldrPageTest extends \PHPUnit_Framework_TestCase
     public function testConstructionSetsNameAndContentProperties()
     {
         $name = "Test";
-        $os = "common";
+        $platform = "common";
         $content = "Lorem ipsum";
-        $page = new TldrPage($name, $os, $content);
+        $page = new TldrPage($name, $platform, $content);
 
         $this->assertEquals($name, $page->getName(), "Failed asserting that page name is '{$name}''");
-        $this->assertEquals($os, $page->getOs(), "Failed asserting that OS is {$os}");
+        $this->assertEquals($platform, $page->getPlatform(), "Failed asserting that OS is {$platform}");
         $this->assertEquals($content, $page->getContent(), "Failed asserting that content is '{$content}'");
     }
 

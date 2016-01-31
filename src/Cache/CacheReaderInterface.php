@@ -6,5 +6,20 @@ use GarethEllis\Tldr\Page\TldrPage;
 
 interface CacheReaderInterface
 {
-    public function readFromCache(String $pageName): TldrPage;
+    /**
+     * Retrieve a list of pages from cache
+     *
+     * @return array
+     */
+    public function getPageList(): array;
+
+    /**
+     * Retrieve a specific page from cache
+     *
+     * @param String $platform
+     * @param String $pageName
+     * @throw CacheRecordNotFoundException
+     * @return TldrPage
+     */
+    public function readFromCache(String $platform, String $pageName): TldrPage;
 }

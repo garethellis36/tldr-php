@@ -12,17 +12,17 @@ class TldrPage
     /**
      * @var String
      */
-    private $os;
+    private $platform;
 
     /**
      * @var String
      */
     private $content;
 
-    public function __construct(String $name, String $os, String $content)
+    public function __construct(String $name, String $platform, String $content)
     {
         $this->name = $name;
-        $this->os = $os;
+        $this->platform = $platform;
         $this->content = $content;
     }
 
@@ -37,9 +37,9 @@ class TldrPage
     /**
      * @return String
      */
-    public function getOs()
+    public function getPlatform()
     {
-        return $this->os;
+        return $this->platform;
     }
 
     /**

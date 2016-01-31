@@ -1,6 +1,6 @@
 <?php
 
-namespace GarethEllis\Tldr\Test\Console\Output;
+namespace GarethEllis\Tldr\Tests\Console\Output;
 
 use GarethEllis\Tldr\Console\Output\PageOutput;
 use GarethEllis\Tldr\Page\TldrPage;

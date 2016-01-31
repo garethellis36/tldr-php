@@ -19,7 +19,12 @@ class StashReader implements CacheReaderInterface
     {
     }
 
-    public function readFromCache(String $pageName): TldrPage
+    public function getPageList(): array
+    {
+        // TODO: Implement getPageList() method.
+    }
+
+    public function readFromCache(String $platform, String $pageName): TldrPage
     {
         // TODO: Implement readFromCache() method.
     }

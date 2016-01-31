@@ -1,6 +1,6 @@
 <?php
 
-namespace GarethEllis\Tldr\Test\Fetcher;
+namespace GarethEllis\Tldr\Tests\Fetcher;
 
 use GarethEllis\Tldr\Fetcher\RemoteFetcher;
 use GuzzleHttp\Client;
