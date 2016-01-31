@@ -21,5 +21,5 @@ run the following:
 
 ## More ##
 
-[CONTRIBUTING](contributing.md)   
-[LICENSE](license.md)
+[Contributing](CONTRIBUTING.md)   
+[License](LICENSE.md)
