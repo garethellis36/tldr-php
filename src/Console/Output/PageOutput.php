@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace GarethEllis\Tldr\Console\Output;
 
@@ -31,7 +32,7 @@ class PageOutput
         $this->output->writeln("");
     }
 
-    protected function writeLine($line)
+    protected function writeLine(String $line)
     {
         if (empty(trim($line))) {
             return false;
@@ -52,51 +53,51 @@ class PageOutput
         return $this->outputHowToCommand($line);
     }
 
-    protected function isHeading($line)
+    protected function isHeading(String $line)
     {
         return substr($line, 0, 2) === "# ";
     }
 
-    protected function isDescription($line)
+    protected function isDescription(String $line)
     {
         return substr($line, 0, 2) === "> ";
     }
 
-    protected function isHowToIntro($line)
+    protected function isHowToIntro(String $line)
     {
         return substr($line, 0, 2) === "- ";
     }
 
-    protected function isHowToCommand($line)
+    protected function isHowToCommand(String $line)
     {
         return substr($line, 0, 1) === "`" && substr($line, strlen($line) - 1, 1) === "`";
     }
 
-    protected function outputHeading($line)
+    protected function outputHeading(String $line)
     {
         $this->setHeadingStyle();
         $this->output->writeln($this->getOutputString($line, "heading"));
     }
 
-    protected function outputDescription($line)
+    protected function outputDescription(String $line)
     {
         $this->setDescriptionStyle();
         $this->output->writeln($this->getOutputString($line, "description", true));
     }
 
-    protected function outputHowToIntro($line)
+    protected function outputHowToIntro(String $line)
     {
         $this->setHowToIntroStyle();
         $this->output->writeln($this->getOutputString($line, "howtointro"));
     }
 
-    protected function outputHowToCommand($line)
+    protected function outputHowToCommand(String $line)
     {
         $this->setHowToCommandStyle();
         $this->output->writeln($this->getOutputString($line, "howtocommand", true));
     }
 
-    protected function stripMarkdown($line)
+    protected function stripMarkdown(String $line)
     {
         if ($this->isHeading($line)) {
             return substr_replace($line, "", 0, 2);

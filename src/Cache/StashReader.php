@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: garethellis
- * Date: 30/01/2016
- * Time: 20:11
- */
+declare(strict_types=1);
 
 namespace GarethEllis\Tldr\Cache;
 
