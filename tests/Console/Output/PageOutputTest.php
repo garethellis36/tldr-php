@@ -36,29 +36,25 @@ class PageOutputTest extends \PHPUnit_Framework_TestCase
 
         $output->expects($this->at(4))
             ->method("writeln")
-            ->with("  <description>A file archiver with high compression ratio.</description>");
+            ->with("  <description>A file archiver with high compression ratio.</description>" . PHP_EOL);
 
         $output->expects($this->at(5))
-            ->method('writeln')
-            ->with("");
-
-        $output->expects($this->at(6))
             ->method("getFormatter")
             ->will($this->returnValue($mockFormatter));
 
-        $output->expects($this->at(7))
+        $output->expects($this->at(6))
             ->method("writeln")
             ->with("  <howtointro>- Compress directory or file:</howtointro>");
 
-        $output->expects($this->at(8))
+        $output->expects($this->at(7))
             ->method("getFormatter")
             ->will($this->returnValue($mockFormatter));
 
-        $output->expects($this->at(9))
+        $output->expects($this->at(8))
             ->method("writeln")
-            ->with("    <howtocommand>7za a <compressed.7z> <directory_or_file_to_compress></howtocommand>");
+            ->with("    <howtocommand>7za a <compressed.7z> <directory_or_file_to_compress></howtocommand>" . PHP_EOL);
 
-        $output->expects($this->at(10))
+        $output->expects($this->at(9))
             ->method('writeln')
             ->with("");
 

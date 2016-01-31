@@ -27,6 +27,8 @@ class PageOutput
         foreach ($lines as $line) {
             $this->writeLine($line);
         }
+
+        $this->output->writeln("");
     }
 
     protected function writeLine($line)
@@ -73,27 +75,25 @@ class PageOutput
     protected function outputHeading($line)
     {
         $this->setHeadingStyle();
-        $this->output->writeln($this->doOutput($line, "heading"));
+        $this->output->writeln($this->getOutputString($line, "heading"));
     }
 
     protected function outputDescription($line)
     {
         $this->setDescriptionStyle();
-        $this->output->writeln($this->doOutput($line, "description"));
-        $this->output->writeln("");
+        $this->output->writeln($this->getOutputString($line, "description", true));
     }
 
     protected function outputHowToIntro($line)
     {
         $this->setHowToIntroStyle();
-        $this->output->writeln($this->doOutput($line, "howtointro"));
+        $this->output->writeln($this->getOutputString($line, "howtointro"));
     }
 
     protected function outputHowToCommand($line)
     {
         $this->setHowToCommandStyle();
-        $this->output->writeln($this->doOutput($line, "howtocommand"));
-        $this->output->writeln("");
+        $this->output->writeln($this->getOutputString($line, "howtocommand", true));
     }
 
     protected function stripMarkdown($line)
@@ -140,9 +140,10 @@ class PageOutput
         $this->output->getFormatter()->setStyle('howtocommand', $style);
     }
 
-    protected function doOutput($line, $tag)
+    protected function getOutputString(String $line, String $tag, Bool $newLineAfter = false): String
     {
         $indent = str_repeat(" ", $this->isHowToCommand($line) ? 4 : 2);
-        return $indent . "<{$tag}>" . $this->stripMarkdown($line). "</{$tag}>";
+        return $indent . "<{$tag}>" . $this->stripMarkdown($line). "</{$tag}>"
+            . ($newLineAfter ? PHP_EOL : null);
     }
 }

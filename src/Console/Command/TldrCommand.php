@@ -38,8 +38,8 @@ class TldrCommand extends Command
         try {
 
             $page = $fetcher->fetchPage($input->getArgument("page"));
-            $output = new PageOutput($output);
-            $output->write($page);
+            $pageOutput = new PageOutput($output);
+            $pageOutput->write($page);
 
         } catch (PageNotFoundException $e) {
 
