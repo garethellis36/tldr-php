@@ -6,8 +6,8 @@ namespace GarethEllis\Tldr\Fetcher;
 use GarethEllis\Tldr\Fetcher\Exception\PageNotFoundException;
 use GarethEllis\Tldr\Page\TldrPage;
 use GuzzleHttp\Client;
-use GarethEllis\Tldr\Cache\CacheWriterInterface;
 use GarethEllis\Tldr\Fetcher\Exception\RemoteFetcherException;
+use Metadata\Cache\CacheInterface;
 
 /**
  * Class RemoteFetcher
@@ -16,8 +16,9 @@ use GarethEllis\Tldr\Fetcher\Exception\RemoteFetcherException;
  *
  * @package GarethEllis\Tldr\Fetcher
  */
-class RemoteFetcher extends AbstractFetcher implements PageFetcherInterface
+class RemoteFetcher implements PageFetcherInterface
 {
+    use OperatingSystemTrait;
 
     protected $http;
 
@@ -33,19 +34,20 @@ class RemoteFetcher extends AbstractFetcher implements PageFetcherInterface
         "https://api.github.com/repos/tldr-pages/tldr/contents/pages/{platform}/{command}.md?ref=master";
 
     /**
-     * @var CacheWriterInterface
+     * @var array
      */
-    private $cacheWriter;
+    private $options;
 
     /**
      * RemoteFetcher constructor.
      *
      * @param \GuzzleHttp\Client $http
+     * @param CacheInterface $cache
      */
-    public function __construct(Client $http, CacheWriterInterface $cacheWriter = null)
+    public function __construct(Client $http, array $options = [])
     {
         $this->http = $http;
-        $this->cacheWriter = $cacheWriter;
+        $this->options = $options;
     }
 
     /**
@@ -67,17 +69,9 @@ class RemoteFetcher extends AbstractFetcher implements PageFetcherInterface
         $pages = base64_decode($contents["content"]);
         $json = json_decode($pages, true);
         $pages = $json["commands"];
+        $page = $this->findPageInList($pageName, $pages);
 
-        $pages = $this->findPageInList($pageName, $pages);
-
-        //working on assumption that only one page has been found!
-        if (empty($pages)) {
-            throw new PageNotFoundException;
-        }
-
-        $page = $pages["0"];
-        $platform = $page["platform"][0];
-        $url = str_replace("{platform}", $platform, $this->pageInfoUrlTemplate);
+        $url = str_replace("{platform}", $page["platform"], $this->pageInfoUrlTemplate);
         $url = str_replace("{command}", $page["name"], $url);
 
         try {
@@ -87,14 +81,43 @@ class RemoteFetcher extends AbstractFetcher implements PageFetcherInterface
         }
 
         $contents = json_decode($response->getBody()->getContents(), true);
-
         $pageContent = base64_decode($contents["content"]);
+        $page = new TldrPage($pageName, $page["platform"], $pageContent);
 
-        $page = new TldrPage($pageName, $platform, $pageContent);
+        return $page;
+    }
 
-        if ($this->cacheWriter) {
-            $this->cacheWriter->writeToCache($page);
+    protected function findPageInList(String $page, array $list)
+    {
+        $filtered = array_filter($list, function ($foundPage) use ($page) {
+            return $foundPage["name"] === $page;
+        });
+
+        if (empty($filtered)) {
+            throw new PageNotFoundException;
         }
+
+        $page = array_shift($filtered);
+
+        foreach ($page["platform"] as $k => $platform) {
+
+            if ($platform === $this->getOperatingSystem()) {
+                $platformSpecificKey = $k;
+                continue;
+            }
+
+            if ($platform === "common") {
+                $commonKey = $k;
+                continue;
+            }
+        }
+
+        if (!isset($commonKey) && !isset($platformSpecificKey)) {
+            throw new PageNotFoundException();
+        }
+
+        $key = $platformSpecificKey ?? $commonKey;
+        $page["platform"] = $page["platform"][$key];
 
         return $page;
     }

@@ -5,7 +5,7 @@ namespace GarethEllis\Tldr\Cache;
 
 use GarethEllis\Tldr\Page\TldrPage;
 
-interface CacheReaderInterface
+interface CacheAdapterInterface
 {
     /**
      * Retrieve a list of pages from cache
@@ -23,4 +23,6 @@ interface CacheReaderInterface
      * @return TldrPage
      */
     public function readFromCache(String $platform, String $pageName): TldrPage;
+
+    public function writeToCache(TldrPage $page);
 }

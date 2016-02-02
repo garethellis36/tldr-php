@@ -3,49 +3,48 @@ declare(strict_types=1);
 
 namespace GarethEllis\Tldr\Fetcher;
 
-use GarethEllis\Tldr\Cache\CacheReaderInterface;
-use GarethEllis\Tldr\Fetcher\Exception\CachedPageNotFoundException;
+use GarethEllis\Tldr\Cache\CacheAdapterInterface;
+use GarethEllis\Tldr\Fetcher\Exception\PageNotFoundException;
 use GarethEllis\Tldr\Page\TldrPage;
 
-class CacheFetcher extends AbstractFetcher implements PageFetcherInterface
+class CacheFetcher implements PageFetcherInterface
 {
+    use OperatingSystemTrait;
+
     /**
      * @var PageFetcherInterface
      */
     private $fetcher;
 
     /**
-     * @var CacheReaderInterface
+     * @var CacheAdapterInterface
      */
-    private $cacheReader;
+    private $cache;
 
-    public function __construct(PageFetcherInterface $fetcher, CacheReaderInterface $cacheReader)
+    /**
+     * @var array
+     */
+    private $options;
+
+    public function __construct(PageFetcherInterface $fetcher, CacheAdapterInterface $cache, array $options = [])
     {
         $this->fetcher = $fetcher;
-        $this->cacheReader = $cacheReader;
+        $this->cache = $cache;
+        $this->options = $options;
     }
 
     public function fetchPage(string $pageName): TldrPage
     {
-        $pages = $this->findPageInList($pageName, $this->cacheReader->getPageList());
-
-        //page is not in list of pages in cache, go to next decorator
-        if (empty($pages)) {
-            return $this->fetcher->fetchPage($pageName);
-        }
-
-        //page is in list of pages in cache
-        $page = $pages["0"];
-        $platform = $page["platform"][0];
 
         try {
 
-            //see if actual page is saved in cache
-            return $this->cacheReader->readFromCache($platform, $pageName);
-        } catch (CachedPageNotFoundException $e) {
+            return $this->cache->readFromCache($this->getOperatingSystem(), $pageName);
+        } catch (PageNotFoundException $e) {
 
-            //page is not saved in cache, go to next decorator
-            return $this->fetcher->fetchPage($pageName);
+            $page = $this->fetcher->fetchPage($pageName);
+            $this->cache->writeToCache($page);
+
+            return $page;
         }
     }
 }

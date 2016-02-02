@@ -5,7 +5,7 @@ namespace GarethEllis\Tldr\Cache;
 
 use GarethEllis\Tldr\Page\TldrPage;
 
-class StashReader implements CacheReaderInterface
+class StashAdapter implements CacheAdapterInterface
 {
     /**
      * CacheReader constructor.
@@ -22,5 +22,10 @@ class StashReader implements CacheReaderInterface
     public function readFromCache(String $platform, String $pageName): TldrPage
     {
         // TODO: Implement readFromCache() method.
+    }
+
+    public function writeToCache(TldrPage $page)
+    {
+        // TODO: Implement writeToCache() method.
     }
 }
