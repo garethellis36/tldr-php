@@ -16,9 +16,9 @@ trait OperatingSystemTrait
         $uname = strtolower(php_uname());
         if (strpos($uname, "darwin") !== false) {
             return "osx";
-        } else if (strpos($uname, "win") !== false) {
+        } elseif (strpos($uname, "win") !== false) {
             return "windows";
-        } else if (strpos($uname, "linux") !== false) {
+        } elseif (strpos($uname, "linux") !== false) {
             return "linux";
         }
         throw new UnknownOperatingSystemException("Unknown operating system {$uname}");
