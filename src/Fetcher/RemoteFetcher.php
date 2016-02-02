@@ -42,7 +42,6 @@ class RemoteFetcher implements PageFetcherInterface
      * RemoteFetcher constructor.
      *
      * @param \GuzzleHttp\Client $http
-     * @param CacheInterface $cache
      */
     public function __construct(Client $http, array $options = [])
     {
