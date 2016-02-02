@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace GarethEllis\Tldr\Console\Command;
 
+use GarethEllis\Tldr\Cache\StashAdapter;
 use GarethEllis\Tldr\Console\Output\PageOutput;
+use GarethEllis\Tldr\Fetcher\CacheFetcher;
 use GarethEllis\Tldr\Fetcher\Exception\RemoteFetcherException;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,8 +37,10 @@ class TldrCommand extends Command
         $http = new Http();
         $fetcher = new RemoteFetcher($http);
 
-        //$cacheReader = new StashReader();
-        //$fetcher = new CacheFetcher($fetcher, $cacheReader);
+        $driver = new FileSystem();
+        $pool = new Pool($driver);
+        $cache = new StashAdapter($pool);
+        $fetcher = new CacheFetcher($fetcher, $cache);
 
         try {
 

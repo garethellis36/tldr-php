@@ -8,13 +8,6 @@ use GarethEllis\Tldr\Page\TldrPage;
 interface CacheAdapterInterface
 {
     /**
-     * Retrieve a list of pages from cache
-     *
-     * @return array
-     */
-    public function getPageList(): array;
-
-    /**
      * Retrieve a specific page from cache
      *
      * @param String $platform
@@ -24,5 +17,11 @@ interface CacheAdapterInterface
      */
     public function readFromCache(String $platform, String $pageName): TldrPage;
 
+    /**
+     * Store a page in cache
+     *
+     * @param TldrPage $page
+     * @return void
+     */
     public function writeToCache(TldrPage $page);
 }
