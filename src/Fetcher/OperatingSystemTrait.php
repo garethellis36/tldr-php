@@ -8,6 +8,11 @@ use GarethEllis\Tldr\Fetcher\Exception\UnknownOperatingSystemException;
 
 trait OperatingSystemTrait
 {
+    /**
+     * @var array
+     */
+    private $options;
+
     protected function getOperatingSystem(): String
     {
         if (isset($this->options["operatingSystem"])) {
