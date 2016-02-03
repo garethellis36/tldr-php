@@ -73,16 +73,21 @@ class StashAdapterTest extends \PHPUnit_Framework_TestCase
     public function testReadFromCacheHandleMiss()
     {
         $item = $this->getMock(Item::class);
-        $item->expects($this->once())
+        $item->expects($this->any())
             ->method("get")
             ->will($this->returnValue(null));
 
-        $item->expects($this->once())
+        $item->expects($this->any())
             ->method("isMiss")
             ->will($this->returnValue(true));
 
         $pool = $this->getMock(Pool::class);
-        $pool->expects($this->once())
+        $pool->expects($this->at(1))
+            ->method("getItem")
+            ->with("osx/7za")
+            ->will($this->returnValue($item));
+
+        $pool->expects($this->at(2))
             ->method("getItem")
             ->with("common/7za")
             ->will($this->returnValue($item));
@@ -90,6 +95,6 @@ class StashAdapterTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(PageNotFoundException::class);
 
         $stash = new StashAdapter($pool);
-        $stash->readFromCache("common", "7za");
+        $stash->readFromCache("osx", "7za");
     }
 }

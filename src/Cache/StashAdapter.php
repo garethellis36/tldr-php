@@ -31,16 +31,23 @@ class StashAdapter implements CacheAdapterInterface
     {
         $item = $this->pool->getItem($platform . "/" . $pageName);
         $page = $item->get();
+
         if ($item->isMiss()) {
-            throw new PageNotFoundException();
+
+            $item = $this->pool->getItem("common/" . $pageName);
+            $page = $item->get();
+
+            if ($item->isMiss()) {
+                throw new PageNotFoundException();
+            }
         }
+
         return $page;
     }
 
     public function writeToCache(TldrPage $page)
     {
         $item = $this->pool->getItem($page->getPlatform() . "/" . $page->getName());
-        $item->get();
         $item->lock();
         $item->set($page);
     }

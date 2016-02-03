@@ -37,7 +37,9 @@ class TldrCommand extends Command
         $http = new Http();
         $fetcher = new RemoteFetcher($http);
 
-        $driver = new FileSystem();
+        $driver = new FileSystem([
+            "path" => sys_get_temp_dir()
+        ]);
         $pool = new Pool($driver);
         $cache = new StashAdapter($pool);
         $fetcher = new CacheFetcher($fetcher, $cache);
