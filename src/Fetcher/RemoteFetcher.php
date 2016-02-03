@@ -7,7 +7,6 @@ use GarethEllis\Tldr\Fetcher\Exception\PageNotFoundException;
 use GarethEllis\Tldr\Page\TldrPage;
 use GuzzleHttp\Client;
 use GarethEllis\Tldr\Fetcher\Exception\RemoteFetcherException;
-use Metadata\Cache\CacheInterface;
 
 /**
  * Class RemoteFetcher
