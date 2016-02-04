@@ -28,7 +28,7 @@ Filter for man pages relating to the given operating system. Without this option
 Forces the application to reload the given man page from the remote source and refreshes the local cache.
 
 `tldr --flush-cache`
-Delete all man pages from the local cache. **Currently not working!**
+Delete all man pages from the local cache.
 
 ## More ##
 
