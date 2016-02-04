@@ -11,6 +11,8 @@ use GarethEllis\Tldr\Fetcher\OperatingSystemTrait;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\HelpCommand;
+use Symfony\Component\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -81,8 +83,7 @@ class TldrCommand extends Command
         }
 
         if (!$input->getArgument("page")) {
-            $input = new ArrayInput(array('command' => 'help'));
-            return $this->run($input, $output);
+            return $this->outputHelp($input, $output);
         }
 
         if ($input->getOption('refresh-cache')) {
@@ -102,5 +103,18 @@ class TldrCommand extends Command
 
             return $output->writeln("<error>Unable to connect to repository :-(</error>");
         }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
+    protected function outputHelp(InputInterface $input, OutputInterface $output)
+    {
+        $help = new HelpCommand();
+        $help->setCommand($this);
+        return $help->run($input, $output);
     }
 }
