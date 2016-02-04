@@ -42,7 +42,7 @@ class TldrCommand extends Command
             )
             ->addOption(
                 'os',
-                null,
+                'o',
                 InputOption::VALUE_OPTIONAL,
                 "Operating system to search for: linux, osx or sunos",
                 null

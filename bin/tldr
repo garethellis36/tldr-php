@@ -5,7 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use GarethEllis\Tldr\Console\Command\TldrCommand;
 use GarethEllis\Tldr\Console\TldrApplication;
 
-$application = new TldrApplication();
+$application = new TldrApplication("TLDR man pages - PHP client by Gareth Ellis", "0.1");
 $tldr = new TldrCommand();
 $application->add($tldr);
 $application->run();
