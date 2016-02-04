@@ -17,7 +17,18 @@ This is a PHP client for the [TLDR man pages project](https://github.com/tldr-pa
 This client is still in development. At this time, to use the client, you should clone this repo and
 run the following:
 
-`php src/application.php tldr <command>`
+`bin/tldr <command>`
+
+### Options ###
+
+`tldr <command> --os=osx`
+Filter for man pages relating to the given operating system. Without this option set, the application will attempt to determine your OS and use that. Valid operating system values are `osx`, `linux` and `sunos`.
+
+`tldr <command> --refresh-cache`
+Forces the application to reload the given man page from the remote source and refreshes the local cache.
+
+`tldr --flush-cache`
+Delete all man pages from the local cache. **Currently not working!**
 
 ## More ##
 
