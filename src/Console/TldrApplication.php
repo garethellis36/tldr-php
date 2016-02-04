@@ -4,7 +4,9 @@ namespace GarethEllis\Tldr\Console;
 
 use GarethEllis\Tldr\Console\Command\TldrCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class TldrApplication extends Application
 {
@@ -46,5 +48,24 @@ class TldrApplication extends Application
         $inputDefinition->setArguments();
 
         return $inputDefinition;
+    }
+
+    /**
+     * Override parent method so that --help options is used when app is called with no arguments or options
+     *
+     * @param InputInterface|null $input
+     * @param OutputInterface|null $output
+     * @return int
+     * @throws \Exception
+     */
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        if ($input === null) {
+            if (count($_SERVER["argv"]) <= 1) {
+                $args = array_merge($_SERVER["argv"], ["--help"]);
+                $input = new ArgvInput($args);
+            }
+        }
+        return parent::run($input, $output);
     }
 }

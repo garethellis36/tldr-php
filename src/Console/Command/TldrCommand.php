@@ -11,6 +11,7 @@ use GarethEllis\Tldr\Fetcher\OperatingSystemTrait;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,7 +32,7 @@ class TldrCommand extends Command
             ->addArgument(
                 'page',
                 InputArgument::OPTIONAL,
-                'Please specify a man page to look-up.'
+                'The TLDR man page to look-up'
             )
             ->addOption(
                 'refresh-cache',
@@ -57,6 +58,7 @@ class TldrCommand extends Command
         ;
     }
 
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $http = new Http();
@@ -79,7 +81,8 @@ class TldrCommand extends Command
         }
 
         if (!$input->getArgument("page")) {
-            return $output->write("TODO"); //TODO output help page here
+            $input = new ArrayInput(array('command' => 'help'));
+            return $this->run($input, $output);
         }
 
         if ($input->getOption('refresh-cache')) {
