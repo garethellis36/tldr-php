@@ -71,11 +71,7 @@ class TldrCommand extends Command
         }
         $fetcher = new RemoteFetcher($http, $options);
 
-        $driver = new FileSystem([
-            "path" => sys_get_temp_dir() . "tldr-cache"
-        ]);
-        $pool = new Pool($driver);
-        $cache = new StashAdapter($pool);
+        $cache = $this->getCacheAdapterInstance();
         $fetcher = new CacheFetcher($fetcher, $cache, $options);
 
         if ($input->getOption('flush-cache')) {
@@ -116,5 +112,18 @@ class TldrCommand extends Command
         $help = new HelpCommand();
         $help->setCommand($this);
         return $help->run($input, $output);
+    }
+
+    /**
+     * @return StashAdapter
+     */
+    protected function getCacheAdapterInstance()
+    {
+        $driver = new FileSystem([
+            "path" => sys_get_temp_dir() . "tldr-cache"
+        ]);
+        $pool = new Pool($driver);
+        $cache = new StashAdapter($pool);
+        return $cache;
     }
 }
