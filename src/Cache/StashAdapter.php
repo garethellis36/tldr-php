@@ -64,8 +64,6 @@ class StashAdapter implements CacheAdapterInterface
     /**
      * Flush the stash cache
      *
-     * TODO this currently doesn't seem to work, it throws warnings on rmdir
-     *
      * @return void
      */
     public function flushCache()
