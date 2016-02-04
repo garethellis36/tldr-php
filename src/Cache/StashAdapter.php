@@ -72,6 +72,4 @@ class StashAdapter implements CacheAdapterInterface
     {
         $this->pool->flush();
     }
-
-
 }

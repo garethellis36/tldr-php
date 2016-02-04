@@ -86,7 +86,6 @@ class TldrCommand extends Command
             $operatingSystem = $input->getOption('os') ?: $this->getOperatingSystem();
             $cache->deleteFromCache($operatingSystem, $input->getArgument("page"));
         }
-
         try {
 
             $page = $fetcher->fetchPage($input->getArgument("page"));
