@@ -24,4 +24,21 @@ interface CacheAdapterInterface
      * @return void
      */
     public function writeToCache(TldrPage $page);
+
+    /**
+     * Delete a single entry from the cache
+     *
+     * @param String $platform
+     * @param String $pageName
+     *
+     * @return void
+     */
+    public function deleteFromCache(String $platform, String $pageName);
+
+    /**
+     * Flush entire cache
+     *
+     * @return void
+     */
+    public function flushCache();
 }

@@ -51,4 +51,27 @@ class StashAdapter implements CacheAdapterInterface
         $item->lock();
         $item->set($page);
     }
+
+    public function deleteFromCache(String $platform, String $pageName)
+    {
+        $item = $this->pool->getItem($platform . "/" . $pageName);
+        $item->clear();
+        $item = $this->pool->getItem("common/" . $pageName);
+        $item->clear();
+    }
+
+
+    /**
+     * Flush the stash cache
+     *
+     * TODO this currently doesn't seem to work, it throws warnings on rmdir
+     *
+     * @return void
+     */
+    public function flushCache()
+    {
+        $this->pool->flush();
+    }
+
+
 }
