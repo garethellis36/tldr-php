@@ -13,10 +13,10 @@ trait OperatingSystemTrait
      */
     private $options;
 
-    protected function getOperatingSystem(): String
+    protected function getOperatingSystem(array $options): String
     {
-        if (isset($this->options["operatingSystem"])) {
-            return $this->options["operatingSystem"];
+        if (isset($options["operatingSystem"])) {
+            return $options["operatingSystem"];
         }
         $uname = strtolower(php_uname());
         if (strpos($uname, "darwin") !== false) {

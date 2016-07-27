@@ -92,14 +92,8 @@ class RemoteFetcherTest extends \PHPUnit_Framework_TestCase
             ->method("getBody")
             ->will($this->returnValue($mockStream));
 
-        $http->expects($this->at(1))
-            ->method("get")
-            ->with($this->stringContains("linux/base64"))
-            ->will($this->returnValue($mockResponse));
 
-        $fetcher = new RemoteFetcher($http, [
-            "operatingSystem" => "linux"
-        ]);
+        $fetcher = new RemoteFetcher($http);
         $fetcher->fetchPage("base64");
     }
 

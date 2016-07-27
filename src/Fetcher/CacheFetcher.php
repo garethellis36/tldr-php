@@ -21,24 +21,18 @@ class CacheFetcher implements PageFetcherInterface
      */
     private $cache;
 
-    /**
-     * @var array
-     */
-    private $options;
-
-    public function __construct(PageFetcherInterface $fetcher, CacheAdapterInterface $cache, array $options = [])
+    public function __construct(PageFetcherInterface $fetcher, CacheAdapterInterface $cache)
     {
         $this->fetcher = $fetcher;
         $this->cache = $cache;
-        $this->options = $options;
     }
 
-    public function fetchPage(string $pageName): TldrPage
+    public function fetchPage(string $pageName, array $options = []): TldrPage
     {
 
         try {
 
-            return $this->cache->readFromCache($this->getOperatingSystem(), $pageName);
+            return $this->cache->readFromCache($this->getOperatingSystem($options), $pageName);
         } catch (PageNotFoundException $e) {
 
             $page = $this->fetcher->fetchPage($pageName);

@@ -33,19 +33,13 @@ class RemoteFetcher implements PageFetcherInterface
         "https://api.github.com/repos/tldr-pages/tldr/contents/pages/{platform}/{command}.md?ref=master";
 
     /**
-     * @var array
-     */
-    private $options;
-
-    /**
      * RemoteFetcher constructor.
      *
      * @param \GuzzleHttp\Client $http
      */
-    public function __construct(Client $http, array $options = [])
+    public function __construct(Client $http)
     {
         $this->http = $http;
-        $this->options = $options;
     }
 
     /**
@@ -55,7 +49,7 @@ class RemoteFetcher implements PageFetcherInterface
      * @return string
      * @throws PageNotFoundException
      */
-    public function fetchPage(String $pageName): TldrPage
+    public function fetchPage(String $pageName, array $options = []): TldrPage
     {
         try {
             $response = $this->http->get($this->baseUrl);
@@ -67,7 +61,7 @@ class RemoteFetcher implements PageFetcherInterface
         $pages = base64_decode($contents["content"]);
         $json = json_decode($pages, true);
         $pages = $json["commands"];
-        $page = $this->findPageInList($pageName, $pages);
+        $page = $this->findPageInList($pageName, $pages, $options);
 
         $url = str_replace("{platform}", $page["platform"], $this->pageInfoUrlTemplate);
         $url = str_replace("{command}", $page["name"], $url);
@@ -85,7 +79,7 @@ class RemoteFetcher implements PageFetcherInterface
         return $page;
     }
 
-    protected function findPageInList(String $page, array $list)
+    protected function findPageInList(String $page, array $list, array $options)
     {
         $filtered = array_filter($list, function ($foundPage) use ($page) {
             return $foundPage["name"] === $page;
@@ -99,7 +93,7 @@ class RemoteFetcher implements PageFetcherInterface
 
         foreach ($page["platform"] as $k => $platform) {
 
-            if ($platform === $this->getOperatingSystem()) {
+            if ($platform === $this->getOperatingSystem($options)) {
                 $platformSpecificKey = $k;
                 continue;
             }
